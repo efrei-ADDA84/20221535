@@ -1,4 +1,3 @@
-<<<<<<< HEAD
 # Utilise l'image de base Python 3.9
 FROM python:3.9
 
@@ -12,4 +11,3 @@ WORKDIR /app
 RUN pip install requests
 
 # Exécute le script Python
->>>>>>> 7ca80ccd536fc70700d1b028b7c4222ec40deba5
