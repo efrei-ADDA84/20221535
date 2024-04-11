@@ -4,32 +4,32 @@ on: [push]
 jobs:
   transform_wrapper:
     runs-on: ubuntu-latest
-    # permissions:
-    #   checks: write
-    #   contents: read
+    permissions:
+      checks: write
+      contents: read
     steps:
-    - name: Checkout Repository
-      uses: actions/checkout@v2
-    - name: Set up Docker Buildx
-      uses: docker/setup-buildx-action@v1
-    - name: Execute Wrapper in Docker
-      run: |
-        docker run \
-          --env LAT=5.902785 \
-          --env LONG=102.754175 \
-          --env API_KEY="442ed94cfe6ecc84c50d15ba360be7ce" \
-          tp1
+      - name: Checkout Repository
+        uses: actions/checkout@v2
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v1
+      - name: Execute Wrapper in Docker
+        run: |
+          docker run \
+            --env LAT=5.902785 \
+            --env LONG=102.754175 \
+            --env API_KEY="442ed94cfe6ecc84c50d15ba360be7ce" \
+            tp1
 
-    # Étape pour créer le contrôle via l'action GitHub Checks
-    - name: Create API Check
-      uses: LouisBrunner/checks-action@v2.0.0
-      if: always()
-      with:
-        token: ${{ secrets.GITHUB_TOKEN }}
-        name: "Wrapper to API Conversion"
-        conclusion: ${{ job.status }}
-        output: |
-          {
-            "summary": "Wrapper successfully transformed into API",
-            "output_details": "${{ steps.wrapper.outputs.details }}"
-          }
+      # Étape pour créer le contrôle via l'action GitHub Checks
+      - name: Create API Check
+        uses: LouisBrunner/checks-action@v2.0.0
+        if: always()
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+          name: "Wrapper to API Conversion"
+          conclusion: ${{ job.status }}
+          output: |
+            {
+              "summary": "Wrapper successfully transformed into API",
+              "output_details": "${{ steps.wrapper.outputs.details }}"
+            }
