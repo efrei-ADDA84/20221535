@@ -1,9 +1,34 @@
 # 20221535 - Devops - TP2
 ## Configurer un workflow Github Action
 Afin de configurer un workflow, il faut se rendre dans la section "Actions" de notre répositoire.
-On clique sur "New repository" et on copie sans vergogne le code suivant : [https://github.com/vDMG/efrei-tp2](https://github.com/vDMG/efrei-tp2/blob/master/.github/workflows/main.yaml)
+On clique sur "New workflow" et on copie sans vergogne le code suivant : [https://github.com/vDMG/efrei-tp2](https://github.com/vDMG/efrei-tp2/blob/master/.github/workflows/main.yaml)
 ## Transformer un wrapper en API
-
+Voici notre workflow:
+```
+name: "Transform Wrapper into API"
+on: [push]
+jobs:
+  transform_wrapper:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v2
+      - name: Set up QEMU
+        uses: docker/setup-qemu-action@v3
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v3
+      - name: Docker Login
+        uses: docker/login-action@v3.1.0
+        with:
+          username: ${{ secrets.DOCKERHUB_USERNAME }}
+          password: ${{ secrets.DOCKERHUB_TOKEN }}
+      - name: Build Docker image
+        run: docker build -t tp2 .
+      - name: Tag Docker image
+        run: docker tag tp2 artranart/20221535
+      - name: Push Docker image to Docker Hub
+        run: docker push artranart/20221535
+```
 ## Publier automatiquement a chaque push sur Docker Hub
 ## Mettre à disposition son image (format API) sur DockerHub
 ## Mettre à disposition son code dans un repository Github
