@@ -1,8 +1,7 @@
 import os
 import requests
 
-def get_weather(latitude, longitude):
-    api_key = '442ed94cfe6ecc84c50d15ba360be7ce'
+def get_weather(latitude, longitude, api_key):
     url = f"http://api.openweathermap.org/data/2.5/weather?lat={latitude}&lon={longitude}&appid={api_key}&units=metric"
     print("Appel de l'API en cours...")
     response = requests.get(url)
