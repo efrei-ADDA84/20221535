@@ -27,7 +27,7 @@ docker tag tp1 artranart/20221535
 ```
 Puis on clique sur "Push to hub"
 
-#### Récupération
+#### Récupération:
 ```
 docker pull artranart/20221535
 docker run --env LAT=5.902785 --env LONG=102.754175 --env API_KEY="your_key" tp1
