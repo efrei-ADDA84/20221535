@@ -20,5 +20,7 @@ jobs:
           password: ${{ secrets.DOCKERHUB_TOKEN }}
       - name: Build Docker image
         run: docker build -t tp2 .
-      - name: Push Docker image to Docker Hub
+      - name: Tag Docker image
         run: docker tag tp2 artranart/20221535
+      - name: Push Docker image to Docker Hub
+        run: docker push artranart/20221535
