@@ -4,6 +4,9 @@ on: [push]
 jobs:
   transform_wrapper:
     runs-on: ubuntu-latest
+    permissions:
+      checks: write
+      contents: read
     steps:
     - uses: actions/checkout@v2
     # Étape pour exécuter le wrapper et générer des sorties
