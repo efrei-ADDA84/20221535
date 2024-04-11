@@ -32,17 +32,3 @@ jobs:
             --env LONG=102.754175 \
             --env API_KEY="442ed94cfe6ecc84c50d15ba360be7ce" \
             tp1
-
-      # Étape pour créer le contrôle via l'action GitHub Checks
-      - name: Create API Check
-        uses: LouisBrunner/checks-action@v2.0.0
-        if: always()
-        with:
-          token: ${{ secrets.GITHUB_TOKEN }}
-          name: "Wrapper to API Conversion"
-          conclusion: ${{ job.status }}
-          output: |
-            {
-              "summary": "Wrapper successfully transformed into API",
-              "output_details": "${{ steps.wrapper.outputs.details }}"
-            }
