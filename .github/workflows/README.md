@@ -1,9 +1,9 @@
 # 20221535 - Devops - TP2
 ## Configurer un workflow Github Action
 Afin de configurer un workflow, il faut se rendre dans la section "Actions" de notre répositoire.
-![image](https://github.com/efrei-ADDA84/20221535/assets/120374187/3a229046-281d-490c-8fcd-c6d4c10c5e03)
-On clique sur "..." et on copie sans vergogne le code suivant : [https://github.com/vDMG/efrei-tp2](https://github.com/vDMG/efrei-tp2/blob/master/.github/workflows/main.yaml)
+On clique sur "New repository" et on copie sans vergogne le code suivant : [https://github.com/vDMG/efrei-tp2](https://github.com/vDMG/efrei-tp2/blob/master/.github/workflows/main.yaml)
 ## Transformer un wrapper en API
+
 ## Publier automatiquement a chaque push sur Docker Hub
 ## Mettre à disposition son image (format API) sur DockerHub
 ## Mettre à disposition son code dans un repository Github
