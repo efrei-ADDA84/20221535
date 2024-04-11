@@ -19,6 +19,6 @@ jobs:
           username: ${{ secrets.DOCKERHUB_USERNAME }}
           password: ${{ secrets.DOCKERHUB_TOKEN }}
       - name: Build Docker image
-        run: docker build -t username/efrei-devops-tp2:1.0.0 .
+        run: docker build -t tp2 .
       - name: Push Docker image to Docker Hub
-        run: docker push username/efrei-devops-tp2:1.0.0
+        run: docker tag tp2 artranart/20221535
