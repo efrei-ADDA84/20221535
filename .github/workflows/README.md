@@ -1,7 +1,4 @@
-# 20221535
-Devops
-
-# TP2
+# 20221535 - Devops - TP2
 ## Configurer un workflow Github Action
 Afin de configurer un workflow, il faut se rendre dans la section "Actions" de notre répositoire.
 ![image](https://github.com/efrei-ADDA84/20221535/assets/120374187/3a229046-281d-490c-8fcd-c6d4c10c5e03)
