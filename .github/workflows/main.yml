@@ -1,6 +1,5 @@
 name: "Transform Wrapper into API"
 on: [push]
-
 jobs:
   transform_wrapper:
     runs-on: ubuntu-latest
