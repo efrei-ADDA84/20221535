@@ -9,14 +9,14 @@ jobs:
       - name: Check out repository code
         uses: actions/checkout@v3
 
-      - name: GitHub Checks
-        uses: LouisBrunner/checks-action@v2.0.0
+      - uses: LouisBrunner/checks-action@v2.0.0
+        if: always()
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
-          name: "Nom_de_votre_contrôle"
-          status: "completed"
-          conclusion: "success"  # ou "failure" ou "neutral" en fonction du résultat du contrôle
-
+          name: Test XYZ
+          conclusion: ${{ job.status }}
+          output: |
+            {"summary":"${{ steps.test.outputs.summary }}"}
             
 
       - run: echo "💡 The ${{ github.repository }} repository has been cloned to the runner."
