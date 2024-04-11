@@ -9,12 +9,13 @@ jobs:
       contents: read
     steps:
     - uses: actions/checkout@v2
-    # Étape pour exécuter le wrapper et générer des sorties
-    - name: Execute Wrapper and Generate Outputs
-      id: wrapper
+    - name: Execute Wrapper in Docker
       run: |
-        # Votre commande pour exécuter le wrapper
-        # Cette étape doit générer des sorties nécessaires pour votre contrôle
+        docker run \
+          --env LAT=5.902785 \
+          --env LONG=102.754175 \
+          --env API_KEY="442ed94cfe6ecc84c50d15ba360be7ce" \
+          tp1
 
     # Étape pour créer le contrôle via l'action GitHub Checks
     - name: Create API Check
