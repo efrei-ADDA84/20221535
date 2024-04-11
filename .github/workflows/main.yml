@@ -14,6 +14,8 @@ jobs:
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
           name: "Nom_de_votre_contrôle"
+          status: "completed"
+          conclusion: "success"  # ou "failure" ou "neutral" en fonction du résultat du contrôle
 
             
 
