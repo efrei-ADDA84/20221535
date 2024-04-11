@@ -19,16 +19,3 @@ jobs:
         with:
           username: ${{ secrets.DOCKERHUB_USERNAME }}
           password: ${{ secrets.DOCKERHUB_TOKEN }}
-      - name: Build and push
-        uses: docker/build-push-action@v5
-        with:
-          push: true
-          tags: user/app:latest
-            
-      - name: Execute Wrapper in Docker
-        run: |
-          docker run \
-            --env LAT=5.902785 \
-            --env LONG=102.754175 \
-            --env API_KEY="442ed94cfe6ecc84c50d15ba360be7ce" \
-            tp1
