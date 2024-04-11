@@ -1,33 +1,28 @@
-name: GitHub Actions Demo
+name: "Transform Wrapper into API"
 on: [push]
+
 jobs:
-  Explore-GitHub-Actions:
+  transform_wrapper:
     runs-on: ubuntu-latest
-    permissions:
-      checks: write
-      contents: read
     steps:
-      - run: echo "🔎 The name of your branch is ${{ github.ref }} and your repository is ${{ github.repository }}."
+    - uses: actions/checkout@v2
+    # Étape pour exécuter le wrapper et générer des sorties
+    - name: Execute Wrapper and Generate Outputs
+      id: wrapper
+      run: |
+        # Votre commande pour exécuter le wrapper
+        # Cette étape doit générer des sorties nécessaires pour votre contrôle
 
-      - name: Check out repository code
-        uses: actions/checkout@v3
-
-      - uses: LouisBrunner/checks-action@v2.0.0
-        if: always()
-        with:
-          token: ${{ secrets.GITHUB_TOKEN }}
-          name: Test XYZ
-          conclusion: ${{ job.status }}
-          output: |
-            {"summary":"${{ steps.test.outputs.summary }}"}
-            
-
-      - run: echo "💡 The ${{ github.repository }} repository has been cloned to the runner."
-
-      - run: echo "🖥️ The workflow is now ready to test your code on the runner for EFREI."
-
-      - name: List files in the repository
-        run: |
-          ls ${{ github.workspace }}
-
-      - run: echo "🍏 This job's status is ${{ job.status }}."
+    # Étape pour créer le contrôle via l'action GitHub Checks
+    - name: Create API Check
+      uses: LouisBrunner/checks-action@v2.0.0
+      if: always()
+      with:
+        token: ${{ secrets.GITHUB_TOKEN }}
+        name: "Wrapper to API Conversion"
+        conclusion: ${{ job.status }}
+        output: |
+          {
+            "summary": "Wrapper successfully transformed into API",
+            "output_details": "${{ steps.wrapper.outputs.details }}"
+          }
