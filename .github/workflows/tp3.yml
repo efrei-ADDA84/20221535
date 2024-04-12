@@ -16,6 +16,9 @@ jobs:
         with:
           creds: ${{ secrets.AZURE_CREDENTIALS }}
 
+      - name: Display Azure Login Result
+        run: echo "Azure Login Successful"
+
       - name: Azure Container Registry Login
         uses: azure/docker-login@v1
         with:
@@ -23,11 +26,20 @@ jobs:
           username: ${{ secrets.REGISTRY_USERNAME }}
           password: ${{ secrets.REGISTRY_PASSWORD }}
 
+      - name: Display ACR Login Result
+        run: echo "Azure Container Registry Login Successful"
+
       - name: Build Docker image
-        run: docker build . -t ${{ secrets.REGISTRY_LOGIN_SERVER }}/20221535
+        run: |
+          echo "Building Docker image..."
+          docker build . -t ${{ secrets.REGISTRY_LOGIN_SERVER }}/20221535
+          echo "Docker image built successfully"
 
       - name: Push Docker image to Azure Container Registry
-        run: docker push ${{ secrets.REGISTRY_LOGIN_SERVER }}/20221535
+        run: |
+          echo "Pushing Docker image to Azure Container Registry..."
+          docker push ${{ secrets.REGISTRY_LOGIN_SERVER }}/20221535
+          echo "Docker image pushed successfully"
 
       - name: Deploy to Azure Container Instance
         uses: azure/aci-deploy@v1
@@ -37,4 +49,3 @@ jobs:
           resource-group: ${{ secrets.RESOURCE_GROUP }}
           image: ${{ secrets.REGISTRY_LOGIN_SERVER }}/20221535
           name: 20221535
-
