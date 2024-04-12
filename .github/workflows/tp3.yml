@@ -1,1 +1,30 @@
+name: "ACR"
+on: [push]
+jobs:
+  build_and_deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v2
 
+      - name: Azure Login
+        uses: azure/docker-login@v1
+        with:
+          login-server: ${{ secrets.REGISTRY_LOGIN_SERVER }}
+          username: ${{ secrets.REGISTRY_USERNAME }}
+          password: ${{ secrets.REGISTRY_PASSWORD }}
+
+      - name: Build Docker image
+        run: docker build . -t ${{ secrets.REGISTRY_LOGIN_SERVER }}/${{ github.sha }}
+
+      - name: Push Docker image to Azure Container Registry
+        run: docker push ${{ secrets.REGISTRY_LOGIN_SERVER }}/${{ github.sha }}
+
+      - name: Deploy to Azure Container Instance
+        uses: azure/aci-deploy@v1
+        with:
+          resource-group: ${{ secrets.RESOURCE_GROUP }}
+          dns-name-label: devops-${{ github.sha }}
+          image-name: ${{ secrets.REGISTRY_LOGIN_SERVER }}/${{ github.sha }}
+          location: francecentral
+          aci-name: ${{ secrets.ACI_NAME }}
