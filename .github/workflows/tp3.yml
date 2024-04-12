@@ -10,14 +10,16 @@ jobs:
     steps:
       - name: Checkout Repository
         uses: actions/checkout@v2
+        with:
+          path: './repo'
+
+      - name: Echo Checkout Complete
+        run: echo "Repository checkout complete"
 
       - name: Azure Login
         uses: azure/login@v1
         with:
           creds: ${{ secrets.AZURE_CREDENTIALS }}
-
-      - name: Display Azure Login Result
-        run: echo "Azure Login Successful"
 
       - name: Azure Container Registry Login
         uses: azure/docker-login@v1
@@ -26,9 +28,6 @@ jobs:
           username: ${{ secrets.REGISTRY_USERNAME }}
           password: ${{ secrets.REGISTRY_PASSWORD }}
 
-      - name: Display ACR Login Result
-        run: echo "Azure Container Registry Login Successful"
-
       - name: Build Docker image
         run: |
           echo "Building Docker image..."
@@ -36,10 +35,7 @@ jobs:
           echo "Docker image built successfully"
 
       - name: Push Docker image to Azure Container Registry
-        run: |
-          echo "Pushing Docker image to Azure Container Registry..."
-          docker push ${{ secrets.REGISTRY_LOGIN_SERVER }}/20221535
-          echo "Docker image pushed successfully"
+        run: echo "Pushing Docker image to Azure Container Registry..."
 
       - name: Deploy to Azure Container Instance
         uses: azure/aci-deploy@v1
@@ -49,3 +45,6 @@ jobs:
           resource-group: ${{ secrets.RESOURCE_GROUP }}
           image: ${{ secrets.REGISTRY_LOGIN_SERVER }}/20221535
           name: 20221535
+
+      - name: Echo Deployment Complete
+        run: echo "Deployment to Azure Container Instance complete"
