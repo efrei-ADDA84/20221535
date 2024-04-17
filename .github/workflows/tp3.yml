@@ -15,7 +15,7 @@ jobs:
 
     # Build Docker image
     - name: Build Docker image
-      run: docker build -t ${{ secrets.REGISTRY_LOGIN_SERVER }}/20221535:latest
+      run: docker build -t ${{ secrets.REGISTRY_LOGIN_SERVER }}/20221535
 
     # Login to Docker Hub
     - name: Login to Docker Hub
@@ -23,7 +23,7 @@ jobs:
 
     # Push Docker image to Docker Hub
     - name: Push Docker image to Docker Hub
-      run: docker push ${{ secrets.REGISTRY_LOGIN_SERVER }}/20221535:latest
+      run: docker push ${{ secrets.REGISTRY_LOGIN_SERVER }}/20221535
 
     # Login to Azure Container Registry
     - name: Login to Azure Container Registry
