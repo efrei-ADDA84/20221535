@@ -1,30 +1,50 @@
-name: "ACR & ACI Deployment"
+name: Build and Publish Docker Image
 on:
   push:
     branches:
-      - main
-
+      - main # Déclenche le workflow sur les push vers la branche main
 jobs:
-  build_and_deploy:
-    runs-on: ubuntu-latest
+  build-and-publish:
+    runs-on: ubuntu-latest # Utilise la dernière version d'Ubuntu pour exécuter les jobs
+    
     steps:
-      - name: Checkout Repository
-        uses: actions/checkout@v2
+      - run: echo " The name of your branch is ${{ github.ref }} and your repository is ${{ github.repository }}."
+      
+      - name: Check out repository code
+        uses: actions/checkout@v3  
+        
+      - uses: hadolint/hadolint-action@v3.1.0 # Utilise Hadolint pour lint le Dockerfile et assure que les meilleures pratiques sont suivies
+        with:
+          dockerfile: Dockerfile
+        continue-on-error: true
+        
+      #TP3
 
-      - name: Azure Login
+      - name: 'Login via Azure CLI'
         uses: azure/login@v1
         with:
           creds: ${{ secrets.AZURE_CREDENTIALS }}
-
+      
       - name: Azure Container Registry Login
-        uses: Azure/docker-login@v1.0.1
+        uses: azure/docker-login@v1
         with:
           login-server: ${{ secrets.REGISTRY_LOGIN_SERVER }}
           username: ${{ secrets.REGISTRY_USERNAME }}
           password: ${{ secrets.REGISTRY_PASSWORD }}
+      - run: |
+            docker build . -t ${{ secrets.REGISTRY_LOGIN_SERVER }}/${{ secrets.MY_EFREI_IDENT }}:${{ github.sha }}
+            docker push ${{ secrets.REGISTRY_LOGIN_SERVER }}/${{ secrets.MY_EFREI_IDENT }}:${{ github.sha }}
 
-      - name: Build Docker image
-        run: docker build . -t ${{ secrets.REGISTRY_LOGIN_SERVER }}/20221535
-
-      - name: Push Docker image to Azure Container Registry
-        run: docker push ${{ secrets.REGISTRY_LOGIN_SERVER }}/20221535
+      - name: 'Deploy to Azure Container Instances'
+        uses: 'azure/aci-deploy@v1'
+        with:
+          resource-group: ${{ secrets.RESOURCE_GROUP }}
+          dns-name-label: devops-${{ secrets.MY_EFREI_IDENT }}
+          image: ${{ secrets.REGISTRY_LOGIN_SERVER }}/${{ secrets.MY_EFREI_IDENT }}:${{ github.sha }}
+          registry-username: ${{ secrets.REGISTRY_USERNAME }}
+          registry-password: ${{ secrets.REGISTRY_PASSWORD }}
+          name: ${{ secrets.MY_EFREI_IDENT }}
+          location: 'france central'
+          ports: 80
+            
+      - run: echo " This job's status is ${{ job.status }}."
