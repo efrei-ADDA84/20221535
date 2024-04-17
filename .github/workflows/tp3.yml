@@ -53,5 +53,9 @@ jobs:
           name: 20221535
           location: 'france central'
           ports: 80
-            
-      - run: echo " This job's status is ${{ job.status }}."
+
+      - name: Appel api
+        run: curl "http://devops-20221535.francecentral.azurecontainer.io/?lat=5.902785&lon=102.754175"
+
+      - name: 'Check job'
+        run: echo " This job's status is ${{ job.status }}."
