@@ -24,7 +24,6 @@ jobs:
         continue-on-error: true
         
       #TP3
-
       - name: 'Login via Azure CLI'
         uses: azure/login@v1
         with:
