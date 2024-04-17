@@ -1,42 +1,45 @@
-name: Docker Image CI
+name: CI
 
 on:
   push:
-    branches: [ "main" ]
-  pull_request:
-    branches: [ "main" ]
+    branches:
+      - main
 
 jobs:
-  build-and-deploy:
+  build_and_push:
     runs-on: ubuntu-latest
+    
     steps:
-    - name: Checkout code
-      uses: actions/checkout@v3
-      
-    - name: Build the Docker image
-      run: |
-        docker build -t mhrr/20220004:latest .
-      
-    - name: Hadolint
-      uses: hadolint/hadolint-action@v3.1.0
-      with:
-        dockerfile: Dockerfile
-        fail-on: warning,error
-      
-    - name: Log in to Docker Hub
-      run: |
-        echo ${{ secrets.DOCKERHUB_PASSWORD }} | docker login --username ${{ secrets.DOCKERHUB_USERNAME }} --password-stdin
-      
-    - name: Push Docker image to Docker Hub
-      run: docker push mhrr/20220004:latest
+    - name: Checkout repository
+      uses: actions/checkout@v2
 
+    # Build Docker image
+    - name: Build Docker image
+      run: docker build -t art/test:latest .
+
+    # Login to Docker Hub
+    - name: Login to Docker Hub
+      run: echo ${{ secrets.DOCKERHUB_TOKEN }} | docker login -u ${{ secrets.DOCKERHUB_USERNAME }} --password-stdin
+
+    # Push Docker image to Docker Hub
+    - name: Push Docker image to Docker Hub
+      run: docker push art/test:latest
+
+    # Login to Azure Container Registry
+    - name: Login to Azure Container Registry
+      uses: azure/login@v1
+      with:
+        creds: ${{ secrets.AZURE_CREDENTIALS }}
+
+    # Login to Azure Container Registry
     - name: Log in to Azure Container Registry
       uses: docker/login-action@v1
-      with: 
+      with:
         registry: ${{ secrets.REGISTRY_LOGIN_SERVER }}
         username: ${{ secrets.REGISTRY_USERNAME }}
         password: ${{ secrets.REGISTRY_PASSWORD }}
 
+    # Build and push Docker image to Azure Container Registry
     - name: Build and push Docker image to ACR
       uses: docker/build-push-action@v2
       with:
@@ -44,8 +47,13 @@ jobs:
         file: ./Dockerfile
         push: true
         tags: ${{ secrets.REGISTRY_LOGIN_SERVER }}/20221535:latest
-      env:
-        OPENWEATHER_API: ${{ secrets.API_OPENWEATHER }}
+        
+  deploy:
+    runs-on: ubuntu-latest 
+
+    steps: 
+    - name: Checkout code
+      uses: actions/checkout@v2
 
     - name: 'Login via Azure CLI'
       uses: azure/login@v1
@@ -55,12 +63,11 @@ jobs:
     - name: 'Deploy to Azure Container Instance'
       uses: azure/aci-deploy@v1
       with:
-        name: 20220004
         resource-group: ${{ secrets.RESOURCE_GROUP }}
-        location: 'francecentral'
         dns-name-label: devops-20221535
         image: ${{ secrets.REGISTRY_LOGIN_SERVER }}/20221535:latest
+        name: 20221535
+        location: 'francecentral'
         registry-login-server: ${{ secrets.REGISTRY_LOGIN_SERVER }}
         registry-username: ${{ secrets.REGISTRY_USERNAME }}
         registry-password: ${{ secrets.REGISTRY_PASSWORD }}
-        secure-environment-variables: OPENWEATHER_API_KEY=${{ secrets.API_OPENWEATHER }}
