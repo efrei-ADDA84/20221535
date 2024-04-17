@@ -12,7 +12,12 @@ jobs:
       
       - name: Check out repository code
         uses: actions/checkout@v3  
-        
+
+      - name: Update application configuration
+        run: |
+          sed -i 's/server.address=.*/server.address=0.0.0.0/' application.properties
+          sed -i 's/server.port=.*/server.port=8080/' application.properties
+
       - uses: hadolint/hadolint-action@v3.1.0 # Utilise Hadolint pour lint le Dockerfile et assure que les meilleures pratiques sont suivies
         with:
           dockerfile: Dockerfile
@@ -46,9 +51,5 @@ jobs:
           name: 20221535
           location: 'france central'
           ports: 80
-
-      - name: Send HTTP request
-        run: curl "http://devops-20221535.francecentral.azurecontainer.io/?lat=5.902785&lon=102.754175"
-
             
       - run: echo " This job's status is ${{ job.status }}."
