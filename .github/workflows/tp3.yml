@@ -13,6 +13,9 @@ jobs:
       - name: Check out repository code
         uses: actions/checkout@v3  
 
+      - name: Check check
+        run: ls
+
       - name: Update application configuration
         run: |
           sed -i 's/server.address=.*/server.address=0.0.0.0/' application.properties
