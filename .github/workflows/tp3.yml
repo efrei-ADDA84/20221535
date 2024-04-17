@@ -57,8 +57,8 @@ jobs:
       # - name: verbose
       #   run: curl -v "http://devops-20221535.francecentral.azurecontainer.io/?lat=5.902785&lon=102.754175"
 
-      - name: appel api
-        run: curl "http://devops-20221535.francecentral.azurecontainer.io/?lat=5.902785&lon=102.754175"
+      # - name: appel api
+      #   run: curl "http://devops-20221535.francecentral.azurecontainer.io/?lat=5.902785&lon=102.754175"
 
       - name: 'Check job'
-        run: echo " This job's status is ${{ job.status }}."
+        run: echo " This job's status is ${{ job.status }} !"
