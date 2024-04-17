@@ -54,11 +54,11 @@ jobs:
           location: 'france central'
           ports: 80
           
-      - name: ping
-        run: ping devops-20221535.francecentral.azurecontainer.io
+      # - name: ping
+      #   run: ping devops-20221535.francecentral.azurecontainer.io
 
-      - name: verbose
-        run: curl -v "http://devops-20221535.francecentral.azurecontainer.io/?lat=5.902785&lon=102.754175"
+      # - name: verbose
+      #   run: curl -v "http://devops-20221535.francecentral.azurecontainer.io/?lat=5.902785&lon=102.754175"
 
       - name: appel api
         run: curl "http://devops-20221535.francecentral.azurecontainer.io/?lat=5.902785&lon=102.754175"
