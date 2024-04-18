@@ -37,7 +37,6 @@ jobs:
           tags: artranart/efrei-devops-tp3:1.0.0
         
       #TP3
-
       - name: 'Login via Azure CLI'
         uses: Azure/login@v2.0.0
         with:
