@@ -11,13 +11,13 @@ def get_weather(latitude, longitude):
     response = requests.get(url)
     if response.status_code == 200:
         data = response.json()
-        weather_info = {
+        weather = {
             "description": data['weather'][0]['description'],
             "temperature": data['main']['temp'],
             "humidity": data['main']['humidity'],
             "wind_speed": data['wind']['speed']
         }
-        return weather_info
+        return weather
     else:
         return "Error: Failed to retrieve weather data"
     
@@ -26,7 +26,7 @@ def weather_api():
     latitude = request.args.get('lat')
     longitude = request.args.get('lon')
     if latitude and longitude:
-        weather_info = get_weather(latitude, longitude)
+        weather = get_weather(latitude, longitude)
         return jsonify(weather=weather)
     else:
         return jsonify(error="Please provide latitude and longitude parameters"), 400
