@@ -50,6 +50,7 @@ jobs:
           name: 20221535
           location: 'france central'
           ports: 80
+          secure-environment-variables: API_KEY=${{ secrets.API_KEY }}
           
       # - name: ping
       #   run: ping devops-20221535.francecentral.azurecontainer.io
