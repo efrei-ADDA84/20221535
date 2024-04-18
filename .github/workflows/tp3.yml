@@ -1,62 +1,53 @@
-name: Build and Publish Docker Image
+name: To Azure
 on:
   push:
     branches:
       - main
 jobs:
   build-and-publish:
-    runs-on: ubuntu-latest # Utilise la dernière version d'Ubuntu pour exécuter les jobs
-    
+    runs-on: ubuntu-latest
     steps:
-      - run: echo " The name of your branch is ${{ github.ref }} and your repository is ${{ github.repository }}."
-      
       - name: Check out repository code
         uses: actions/checkout@v4.1.2
-        
-      - uses: hadolint/hadolint-action@v3.1.0 # Utilise Hadolint pour lint le Dockerfile et assure que les meilleures pratiques sont suivies
+      - uses: hadolint/hadolint-action@v3.1.0
         with:
           dockerfile: Dockerfile
         continue-on-error: true
       
       - name: Set up QEMU
-        uses: docker/setup-qemu-action@v2 # Configure QEMU pour les architectures non x86
+        uses: docker/setup-qemu-action@v2
 
       - name: Set up Docker Buildx
-        uses: docker/setup-buildx-action@v3 # Configure Docker Buildx qui est un outil de build Docker avancé
+        uses: docker/setup-buildx-action@v3 
         
       - name: Login to Docker Hub
-        uses: docker/login-action@v3 # Se connecte à Docker Hub en utilisant les identifiants stockés dans les secrets du repository
+        uses: docker/login-action@v3 
         with:
           username: ${{ secrets.DOCKERHUB_USERNAME }}
           password: ${{ secrets.DOCKERHUB_TOKEN }}
           
       - name: Build and push Docker image
-        uses: docker/build-push-action@v5 # Construit l'image Docker et la pousse vers Docker Hub 
+        uses: docker/build-push-action@v5
         with:
           push: true
           tags: artranart/efrei-devops-tp3:1.0.0
         
-      #TP3
-
       - name: 'Login via Azure CLI'
         uses: Azure/login@v2.0.0
         with:
           creds: ${{ secrets.AZURE_CREDENTIALS }}
-      
       - name: Log in to Azure Container Registry
         uses: Azure/docker-login@v1.0.1
         with:
           login-server: ${{ secrets.REGISTRY_LOGIN_SERVER }}
           username: ${{ secrets.REGISTRY_USERNAME }}
           password: ${{ secrets.REGISTRY_PASSWORD }}
-
       - name: Build and push Docker image to ACR
         uses: docker/build-push-action@v2
         with:
           context: .
           push: true
           tags: ${{ secrets.REGISTRY_LOGIN_SERVER }}/${{ secrets.MY_EFREI_IDENT }}:latest 
-          
       - name: 'Deploy to Azure Container Instances'
         uses: 'azure/aci-deploy@v1'
         with:
@@ -69,5 +60,3 @@ jobs:
           name: ${{ secrets.MY_EFREI_IDENT }}
           location: 'france south'
           environment-variables: API_KEY=${{ secrets.API_KEY }}
-            
-      - run: echo " This job's status is ${{ job.status }}."
