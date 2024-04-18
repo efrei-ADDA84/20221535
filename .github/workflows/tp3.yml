@@ -2,7 +2,7 @@ name: Build and Publish Docker Image
 on:
   push:
     branches:
-      - main # Déclenche le workflow sur les push vers la branche main
+      - main
 jobs:
   build-and-publish:
     runs-on: ubuntu-latest # Utilise la dernière version d'Ubuntu pour exécuter les jobs
