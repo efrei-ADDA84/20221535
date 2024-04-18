@@ -3,6 +3,7 @@ import requests
 from flask import Flask, jsonify
 
 app = Flask(__name__)
+api_key = get.env(api_key)
 
 def get_weather(latitude, longitude, api_key):
     url = f"http://api.openweathermap.org/data/2.5/weather?lat={latitude}&lon={longitude}&appid={api_key}&units=metric"
