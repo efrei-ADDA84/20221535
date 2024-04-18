@@ -1,13 +1,13 @@
-# Utilise l'image de base Python 3.9
-FROM python:3.9
+FROM python:3.12-alpine
 
-# Copie les fichiers de l'application dans l'image Docker
-COPY . /app
-
-# Définit le répertoire de travail
 WORKDIR /app
 
-# Installe les dépendances
-RUN pip install requests
+COPY requirements.txt requirements.txt
+
+RUN pip install --no-cache-dir -r requirements.txt --user
+
+COPY weather-wrapper-api.py .
 
 EXPOSE 80
+
+ENTRYPOINT ["python", "weather-wrapper-api.py"]
