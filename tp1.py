@@ -26,7 +26,8 @@ def get_weather(latitude, longitude, api_key):
 def weather():
     latitude = float(os.environ.get('LATITUDE'))
     longitude = float(os.environ.get('LONGITUDE'))
-    api_key = os.environ.get('OPENWEATHER_API_KEY')
+    # api_key = os.environ.get('OPENWEATHER_API_KEY')
+    api_key = "442ed94cfe6ecc84c50d15ba360be7ce"
     weather_data = get_weather(latitude, longitude, api_key)
     
     if weather_data:
