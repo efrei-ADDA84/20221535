@@ -1,13 +1,12 @@
-FROM python:3.12-alpine
+FROM python:3.8
 
 WORKDIR /app
 
-COPY requirements.txt requirements.txt
+COPY requirements.txt ./
+RUN pip install --no-cache-dir -r requirements.txt
 
-RUN pip install --no-cache-dir -r requirements.txt --user
-
-COPY weather-wrapper-api.py .
+COPY . .
 
 EXPOSE 80
 
-ENTRYPOINT ["python", "weather-wrapper-api.py"]
+CMD ["python", "weather_script_TP3.py"]
