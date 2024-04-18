@@ -101,4 +101,7 @@ curl "http://devops-20221535.francecentral.azurecontainer.io/?lat=5.902785&lon=1
 En effet, "Connection reset by peer". Que ce soit dans un terminal en local, sur Github Actions ou encore un bash d'Azure, rien ne fonctionne.
 J'ai alors cherché à identifier le problème.
 ![image](https://github.com/efrei-ADDA84/20221535/assets/120374187/bb4d2556-f7b8-48c5-abcd-7d2a0b32fac5)
-Le ping fonctionne bien, donc il y a une connecxion avec le serveur.
+Le ping fonctionne bien, donc il y a une connexion avec le serveur.
+Après beaucoup de temps de recherche (et de commits), je me suis rendu compte qu'il s'agissait un problème avec l'image. En changeant python 3.9 à 3.8, ça marche enfin.
+ ![image](https://github.com/efrei-ADDA84/20221535/assets/120374187/75d720c8-0b14-4c91-9838-21cc9ac50269)
+ 
