@@ -10,4 +10,4 @@ WORKDIR /app
 # Installe les dépendances
 RUN pip install requests
 
-# Exécute le script Python
+EXPOSE 80
