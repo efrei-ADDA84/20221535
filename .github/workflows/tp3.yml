@@ -1,4 +1,4 @@
-name: To Azure
+name: Build and Publish Docker Image
 on:
   push:
     branches:
@@ -37,6 +37,7 @@ jobs:
           tags: artranart/efrei-devops-tp3:1.0.0
         
       #TP3
+
       - name: 'Login via Azure CLI'
         uses: Azure/login@v2.0.0
         with:
@@ -54,18 +55,18 @@ jobs:
         with:
           context: .
           push: true
-          tags: ${{ secrets.REGISTRY_LOGIN_SERVER }}/20221535:latest 
+          tags: ${{ secrets.REGISTRY_LOGIN_SERVER }}/${{ secrets.MY_EFREI_IDENT }}:latest 
           
       - name: 'Deploy to Azure Container Instances'
         uses: 'azure/aci-deploy@v1'
         with:
           resource-group: ${{ secrets.RESOURCE_GROUP }}
-          dns-name-label: devops-20221535
-          image: ${{ secrets.REGISTRY_LOGIN_SERVER }}/20221535:latest
+          dns-name-label: devops-${{ secrets.MY_EFREI_IDENT }}
+          image: ${{ secrets.REGISTRY_LOGIN_SERVER }}/${{ secrets.MY_EFREI_IDENT }}:latest
           registry-login-server: ${{ secrets.REGISTRY_LOGIN_SERVER }}
           registry-username: ${{ secrets.REGISTRY_USERNAME }}
           registry-password: ${{ secrets.REGISTRY_PASSWORD }}
-          name: 20221535
+          name: ${{ secrets.MY_EFREI_IDENT }}
           location: 'france south'
           environment-variables: API_KEY=${{ secrets.API_KEY }}
             
