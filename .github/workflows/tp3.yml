@@ -16,7 +16,7 @@ jobs:
       - name: Update application configuration
         run: |
           sed -i 's/server.address=.*/server.address=0.0.0.0/' application.properties
-          sed -i 's/server.port=.*/server.port=8080/' application.properties
+          sed -i 's/server.port=.*/server.port=80/' application.properties
 
       - uses: hadolint/hadolint-action@v3.1.0
         with:
