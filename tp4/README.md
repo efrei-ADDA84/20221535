@@ -14,6 +14,15 @@ De plus, il ne faut pas oublier de télécharger l'extension Terraform sur VSCod
 ## Initialisation
 On doit créer des fichiers de configuration avant d'initialiser le projet Terraform.
 
+Ensuite j'ai exécuté les commandes suivantes:
+```
+az login
+terraform init
+terraform plan
+terraform apply
+```
+puis : yes
+
 ![Capture d'écran 2024-04-20 182058](https://github.com/efrei-ADDA84/20221535/assets/120374187/c490b15f-ff91-4796-be39-c07ab39ab95c)
 
 Erreur fatale qui m'empêche de continuer...
